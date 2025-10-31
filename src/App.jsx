@@ -323,7 +323,7 @@ Be warm, engaging, and insightful. Make the person feel understood.`;
             <div className="h-96 overflow-y-auto p-6 bg-gray-50">
               {messages.map((msg, idx) => (
                 <div key={idx} className={`mb-4 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
-                  <div className={`inline-block max-w-3/4 p-4 rounded-lg ${
+                  <div className={`inline-block max-w-[75%] p-4 rounded-lg ${
                     msg.role === 'user' 
                       ? 'bg-indigo-600 text-white' 
                       : 'bg-white text-gray-800 border border-gray-200'
