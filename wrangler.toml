@@ -1,0 +1,10 @@
+name = "jungian-typologist-api"
+main = "worker/index.js"
+compatibility_date = "2024-10-01"
+
+# Environment variables (secrets must be set via wrangler or GitHub Actions)
+# Run: wrangler secret put CLAUDE_API_KEY
+# Or configure in GitHub: Settings -> Secrets and variables -> Actions -> New repository secret
+
+[env.production]
+name = "jungian-typologist-api"

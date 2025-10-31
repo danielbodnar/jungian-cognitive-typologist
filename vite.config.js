@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/jungian-cognitive-typologist/', // Replace with your repo name
+  base: '/', // Root path for Cloudflare Pages
   build: {
     outDir: 'dist',
     sourcemap: true

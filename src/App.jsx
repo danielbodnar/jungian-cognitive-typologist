@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Brain, Send, Download, FileText, Users, RefreshCw, MessageSquare } from 'lucide-react';
 
 const CognitiveTypologist = () => {
-  const [apiKey, setApiKey] = useState(localStorage.getItem('claudeApiKey') || '');
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -11,6 +10,9 @@ const CognitiveTypologist = () => {
   const [cognitiveStack, setCognitiveStack] = useState(null);
   const [assessmentCount, setAssessmentCount] = useState(0);
   const messagesEndRef = useRef(null);
+  
+  // API endpoint for the Cloudflare Worker
+  const API_URL = import.meta.env.VITE_API_URL || '/api';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -61,13 +63,7 @@ PROFILE:
 
 Be warm, engaging, and insightful. Make the person feel understood.`;
 
-  const startAssessment = async () => {
-    if (!apiKey.trim()) {
-      alert('Please enter your Claude API key');
-      return;
-    }
-    
-    localStorage.setItem('claudeApiKey', apiKey);
+  const startAssessment = () => {
     setSessionStarted(true);
     setMessages([]);
     setAssessmentComplete(false);
@@ -91,12 +87,10 @@ Be warm, engaging, and insightful. Make the person feel understood.`;
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
@@ -107,7 +101,8 @@ Be warm, engaging, and insightful. Make the person feel understood.`;
       });
 
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `API request failed: ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -126,7 +121,7 @@ Be warm, engaging, and insightful. Make the person feel understood.`;
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Error communicating with Claude API. Please check your API key and try again.');
+      alert('Error communicating with the AI service. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -290,26 +285,6 @@ Be warm, engaging, and insightful. Make the person feel understood.`;
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Claude API Key
-              </label>
-              <input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-ant-..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
-              <p className="text-xs text-gray-500 mt-2">
-                Your API key is stored locally in your browser and only used to communicate directly with Claude's API. 
-                Get your key from <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">console.anthropic.com</a>
-              </p>
-              <p className="text-xs text-amber-600 mt-1">
-                ⚠️ Security Note: API keys are stored in browser localStorage without encryption. Only use this on trusted devices and clear your browser data when done.
-              </p>
             </div>
 
             <button
