@@ -155,6 +155,7 @@ dist-ssr
 
 # Bun
 bun.lockb
+bun.lock
 
 # pnpm debug log
 pnpm-debug.log*
