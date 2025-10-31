@@ -24,7 +24,7 @@ jobs:
       - name: Build frontend
         run: bun run build
         env:
-          VITE_API_URL: https://jungian-typologist-api.YOUR-SUBDOMAIN.workers.dev
+          VITE_API_URL: ${{ vars.WORKER_URL || 'https://jungian-typologist-api.workers.dev' }}
 
       - name: Deploy Cloudflare Worker
         uses: cloudflare/wrangler-action@v3

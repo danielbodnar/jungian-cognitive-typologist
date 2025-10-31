@@ -7,9 +7,26 @@
 
 export default {
   async fetch(request, env) {
+    // Get the origin from the request
+    const origin = request.headers.get('Origin');
+    
+    // Allow requests from Cloudflare Pages domains and localhost for development
+    const allowedOrigins = [
+      'https://jungian-typologist.pages.dev',
+      'http://localhost:5173',
+      'http://localhost:3000',
+    ];
+    
+    // Add custom domain if configured
+    if (env.ALLOWED_ORIGIN) {
+      allowedOrigins.push(env.ALLOWED_ORIGIN);
+    }
+    
+    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+    
     // CORS headers for the response
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': corsOrigin,
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
