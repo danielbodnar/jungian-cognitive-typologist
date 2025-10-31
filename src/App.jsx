@@ -304,8 +304,11 @@ Be warm, engaging, and insightful. Make the person feel understood.`;
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
               <p className="text-xs text-gray-500 mt-2">
-                Your API key is stored locally and never sent to our servers.
+                Your API key is stored locally in your browser and only used to communicate directly with Claude's API. 
                 Get your key from <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">console.anthropic.com</a>
+              </p>
+              <p className="text-xs text-amber-600 mt-1">
+                ⚠️ Security Note: API keys are stored in browser localStorage without encryption. Only use this on trusted devices and clear your browser data when done.
               </p>
             </div>
 
